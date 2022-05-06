@@ -26,7 +26,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/users/**").permitAll();
+                .antMatchers("**/users/**").permitAll();
         http.headers().frameOptions().disable(); // h2-console 페이지 프레임깨지는 오류를 방지할 수 있다.
     }
 }
