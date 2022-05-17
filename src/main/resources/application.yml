@@ -20,10 +20,36 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-        - id: user-service
+#         user-service 매핑을 세분화하여 각각 필요한 필터를 넣음 & 요청 URI에서 '/user-service' 를 제거해서 USER 서비스에서 간단하게 URI 를 지정할 수 있게 한다
+#        - id: user-service
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/**
+        - id: user-service # USER 로그인
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie  # 요청데이터 헤더내용은 삭제
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment} # 인입Path, 서비스URI: 인입이 이렇게 되면 서비스 URI 는 이렇게 보내겠다.
+        - id: user-service # USER 회원가입
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service # USER 그 외(GET) : authorization 검증
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter # 인증검증 필터 추가
         - id: catalog-service
           uri: lb://CATALOG-SERVICE
           predicates:
@@ -53,3 +79,6 @@ spring:
                 baseMessage: Hi, there.
                 preLogger: true
                 postLogger: true
+
+token:
+  secret_key: user_token
