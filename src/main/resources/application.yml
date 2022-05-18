@@ -30,6 +30,6 @@ logging:
   level:
     com.example.userservice: debug
 
-token:
-  expiration_time: 86400000 # 유효시간=하루
-  secret_key: user_token
+#token:
+#  expiration_time: 86400000 # 유효시간=하루
+#  secret_key: user_token
