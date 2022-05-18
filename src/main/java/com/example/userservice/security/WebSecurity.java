@@ -27,7 +27,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                //.antMatchers("**/users/**").permitAll() // 모든 요청 권한허용
+                .antMatchers("/actuator/**").permitAll()  // actuator 관련정보는 무조건 통과
                 .antMatchers("/**").hasIpAddress("192.168.1.100") // 특정 IP만 접근허용
                 .and()
                 .addFilter(getAuthenticationFilter());
