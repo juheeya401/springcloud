@@ -1,6 +1,6 @@
 token:
   expiration_time: 86400000
-  secret_key: user_token
+  secret_key: my_token
 
 gateway:
   ip: 192.168.1.100
