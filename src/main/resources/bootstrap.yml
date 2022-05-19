@@ -1,5 +1,6 @@
+
 spring:
   cloud:
     config:
       uri: http://127.0.0.1:8888
-      name: ecommerce  # Repository 에 있는 설정정보 yaml 파일명
+      name: user-service
