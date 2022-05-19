@@ -1,16 +1,19 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RestTemplate restTemplate;
+    private final Environment env;
+    private final OrderServiceClient orderServiceClient;
 
     /**
      * 로그인 인증을 위한 로직
@@ -58,7 +64,17 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         UserDto resultUser = modelMapper.map(byUserId, UserDto.class);
 
-        List<ResponseOrder> orders = new ArrayList<>();
+        /* 고객의 주문목록 order-service 에서 조회(By RestTemplate)
+        // order-service URL
+        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+        // RestTemplate 를 이용해서 요청 및 응답값 반환 받음
+        ResponseEntity<List<ResponseOrder>> orderResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
+        // 실제로 이용할 수 있는 데이터
+        List<ResponseOrder> orders = orderResponse.getBody();*/
+
+        /* 고객의 주문목록 order-service 에서 조회(By FeignClient) */
+        List<ResponseOrder> orders = orderServiceClient.getOrder(userId);
+
         resultUser.setOrders(orders);
 
         return resultUser;
