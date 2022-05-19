@@ -6,6 +6,7 @@ import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -73,7 +75,16 @@ public class UserServiceImpl implements UserService {
         List<ResponseOrder> orders = orderResponse.getBody();*/
 
         /* 고객의 주문목록 order-service 에서 조회(By FeignClient) */
-        List<ResponseOrder> orders = orderServiceClient.getOrder(userId);
+        /* Feign exception handling */
+        /*List<ResponseOrder> orders = null;
+        try {
+            orders = orderServiceClient.getOrder(userId);
+        } catch (FeignException e) {
+            log.error(e.getMessage());
+        }*/
+
+        /* FeignErrorDecoder 사용해서 에러 헨들링하기 */
+        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
 
         resultUser.setOrders(orders);
 
