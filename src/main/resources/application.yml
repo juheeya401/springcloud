@@ -4,8 +4,26 @@ server:
 spring:
   application:
     name: config-service
+  profiles:
+    active: native
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: test1234
   cloud:
     config:
       server:
+        native:
+          search-locations: file://${user.home}/Developer/study/springcloud/native-file-repo
         git:
-          uri: file:///Users/lee.juhee/Developer/study/springcloud/git-local-repo
+          uri: https://github.com/jhya401/spring-cloud-config.git
+#          username: [private username]
+#          password: [private password]
+#          uri: file:///Users/lee.juhee/Developer/study/springcloud/git-local-repo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
