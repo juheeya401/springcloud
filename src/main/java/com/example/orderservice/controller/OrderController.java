@@ -40,7 +40,7 @@ public class OrderController {
 
     // http://127.0.0.1/order-service/{user_id}/orders/
     @GetMapping("/{userId}/orders")
-    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) {
+    public ResponseEntity<List<ResponseOrder>> getOrders(@PathVariable("userId") String userId) {
         List<OrderDto> orders = orderService.getOrderByUserId(userId);
         List<ResponseOrder> resultDatas = orders.stream().map(e -> modelMapper.map(e, ResponseOrder.class))
                 .collect(Collectors.toList());
