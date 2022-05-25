@@ -12,7 +12,7 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: create-drop # ???? ??? ??, ??
+      ddl-auto: create-drop
     show-sql: true
     generate-ddl: true
     database: h2
@@ -20,6 +20,9 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:catalog
+  kafka:
+    consumer:
+      group-id: consumer-group-id
 
 eureka:
   instance:
