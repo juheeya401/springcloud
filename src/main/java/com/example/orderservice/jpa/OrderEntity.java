@@ -23,7 +23,7 @@ public class OrderEntity implements Serializable {
     @Column(nullable = false, length = 120)
     private String productId;
     @Column(nullable = false)
-    private Integer quantity;
+    private Integer qty;
     @Column(nullable = false)
     private Integer unitPrice;
     @Column(nullable = false)

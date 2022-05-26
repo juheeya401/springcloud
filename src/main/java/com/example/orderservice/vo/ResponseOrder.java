@@ -13,7 +13,7 @@ public class ResponseOrder {
     private String orderId;
 
     private String productId;
-    private Integer quantity;
+    private Integer qty;
     private Integer unitPrice;
     private Integer totalPrice;
 
