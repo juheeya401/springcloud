@@ -2,6 +2,7 @@ package com.example.orderservice.controller;
 
 import com.example.orderservice.dto.OrderDto;
 import com.example.orderservice.messagequeue.KafkaProducer;
+import com.example.orderservice.messagequeue.OrderProducer;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.RequestOrder;
 import com.example.orderservice.vo.ResponseOrder;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class OrderController {
     private final Environment env;
     private final OrderService orderService;
     private final KafkaProducer kafkaProducer;
+    private final OrderProducer orderProducer;
 
     @GetMapping("/health_check")
     public String status() {
@@ -36,13 +39,16 @@ public class OrderController {
         OrderDto requestOrder = modelMapper.map(orderDetails, OrderDto.class);
         requestOrder.setUserId(userId);
 
-        // jpa 작업
-        OrderDto resultOrder = orderService.createOrder(requestOrder);
+        // jpa 작업 - kafka topic 으로 전달하므로 제거
+        //OrderDto resultOrder = orderService.createOrder(requestOrder);
 
         // send this order to the kafka
+        requestOrder.setOrderId(UUID.randomUUID().toString());
+        requestOrder.setTotalPrice(requestOrder.getUnitPrice() * requestOrder.getQty());
         kafkaProducer.send("example-catalog-topic", requestOrder);
+        orderProducer.send("orders", requestOrder);
 
-        ResponseOrder responseOrder = modelMapper.map(resultOrder, ResponseOrder.class);
+        ResponseOrder responseOrder = modelMapper.map(requestOrder, ResponseOrder.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
