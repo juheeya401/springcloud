@@ -8,6 +8,8 @@ import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService {
     private final RestTemplate restTemplate;
     private final Environment env;
     private final OrderServiceClient orderServiceClient;
+
+    // default 브레이커 제거 및 커스텀 주입됨
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     /**
      * 로그인 인증을 위한 로직
@@ -84,7 +89,12 @@ public class UserServiceImpl implements UserService {
         }*/
 
         /* FeignErrorDecoder 사용해서 에러 헨들링하기 */
-        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
+        //List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
+
+        /* Circuit Breaker 사용 */
+        CircuitBreaker circuitbreaker = circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> orders = circuitbreaker.run(() -> orderServiceClient.getOrders(userId)
+                , throwable -> new ArrayList<>());   // Order 서비스와 통신 실패 시 반환할 데이터
 
         resultUser.setOrders(orders);
 
