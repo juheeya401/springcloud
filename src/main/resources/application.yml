@@ -39,3 +39,9 @@ eureka:
 logging:
   level:
     com.example.orderservice: debug # \uD574\uB2F9 \uD328\uD0A4\uC9C0\uC758 \uB85C\uAE45 \uB808\uBCA8
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, httptrace, info, metrics, prometheus
