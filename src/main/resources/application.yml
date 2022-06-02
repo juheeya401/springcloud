@@ -18,9 +18,9 @@ spring:
           search-locations: file://${user.home}/Developer/study/springcloud/native-file-repo
         git:
           uri: https://github.com/jhya401/spring-cloud-config.git
+          # public 저장소니까 계정정보 없어도 됨
 #          username: [private username]
 #          password: [private password]
-#          uri: file:///Users/lee.juhee/Developer/study/springcloud/git-local-repo
 
 management:
   endpoints:
