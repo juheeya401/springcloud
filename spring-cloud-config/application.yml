@@ -1,0 +1,7 @@
+token:
+  expiration_time: 86400000
+#  secret_key: my_token_native_ecommerce
+  secret_key: '{cipher}AQAYfac1L51Cn2BiIhYNZiNo/ML5BNWldzav3eD4EyGnE+2tEsiizdkEmsV+F9UuWZtuu5vcV+hY8HP6sHtYFiFoXcMt+KcnFJUQ+pVJH+tVKOfR5Gi4EQogJAE6dbaoBcVqZrAQJIwXm1P7AJSCNsLaEVGpOaEX4VlLnMHIAxulzOpwaef5H3+6gmcWbEsN8LOEdiI3gALUeLhmTCSlR0LjRMgPvVqhzen2WLV3F2ui8StvulIixBNXdFi/Vbe3xUcDMyqhDll7qqz3XV+BBLsJX52FTf07LQa2ETH965b2TsNdvGeWPrJyoVQ0J0YDWup5wqF8fQul0+ZsHBPJaXHpEqezQtEpq9z08+VKq46RcNg6dJu1AmEaUcSMEm8pgDlP9Mc5Km7bMRhgQxEVMCyR'
+
+gateway:
+  ip: 192.168.1.100
