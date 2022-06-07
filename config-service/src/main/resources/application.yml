@@ -1,0 +1,29 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: test1234
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file://${user.home}/Developer/study/springcloud/native-file-repo
+        git:
+          uri: https://github.com/jhya401/spring-cloud-config.git
+          # public 저장소니까 계정정보 없어도 됨
+#          username: [private username]
+#          password: [private password]
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh

@@ -1,0 +1,15 @@
+encrypt:
+#  key: qwerasdfzxcv1234567890
+  key-store:
+#    location: file://${user.home}/Developer/study/springcloud/key-store/apiEncryptionKey.jks
+    location: file:/apiEncryptionKey.jks
+    password: test1234
+    alias: apiEncryptionKey
+
+#spring:
+#  jpa:
+#    datasource:
+#      driver-class-name: org.h2.Driver
+#      url: jdbc:h2:mem:user
+#      username: sa
+#      password: 1234
