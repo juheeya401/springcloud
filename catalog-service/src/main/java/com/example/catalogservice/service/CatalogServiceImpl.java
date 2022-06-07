@@ -1,6 +1,5 @@
 package com.example.catalogservice.service;
 
-import com.example.catalogservice.dto.CatalogDto;
 import com.example.catalogservice.jpa.CatalogEntity;
 import com.example.catalogservice.jpa.CatalogRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,4 @@ public class CatalogServiceImpl implements CatalogService{
     public Iterable<CatalogEntity> getAllCatalogs() {
         return catalogRepository.findAll();
     }
-
-
 }
