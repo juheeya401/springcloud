@@ -12,5 +12,4 @@ public class CatalogDto {
 
     private String orderId;
     private String userId;
-
 }
